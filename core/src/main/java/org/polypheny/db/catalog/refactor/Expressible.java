@@ -14,25 +14,12 @@
  * limitations under the License.
  */
 
-package org.polypheny.db.schema.types;
+package org.polypheny.db.catalog.refactor;
 
-import java.lang.reflect.Type;
-import org.apache.calcite.linq4j.Queryable;
-import org.polypheny.db.adapter.DataContext;
-import org.polypheny.db.catalog.snapshot.Snapshot;
-import org.polypheny.db.type.entity.PolyValue;
+import org.apache.calcite.linq4j.tree.Expression;
 
-public interface QueryableEntity extends Typed {
+public interface Expressible {
 
-    /**
-     * Converts this table into a {@link Queryable}.
-     */
-    Queryable<PolyValue[]> asQueryable( DataContext dataContext, Snapshot snapshot );
-
-    default Type getElementType() {
-        return PolyValue[].class;
-    }
-
-    Type getElementType();
+    Expression asExpression();
 
 }
