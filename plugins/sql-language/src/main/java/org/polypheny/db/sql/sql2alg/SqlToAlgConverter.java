@@ -127,6 +127,7 @@ import org.polypheny.db.algebra.stream.LogicalDelta;
 import org.polypheny.db.algebra.type.AlgDataType;
 import org.polypheny.db.algebra.type.AlgDataTypeFactory;
 import org.polypheny.db.algebra.type.AlgDataTypeField;
+import org.polypheny.db.catalog.Snapshot;
 import org.polypheny.db.catalog.entity.Entity;
 import org.polypheny.db.catalog.entity.logical.LogicalTable;
 import org.polypheny.db.catalog.exceptions.GenericRuntimeException;
@@ -2104,8 +2105,8 @@ public class SqlToAlgConverter implements NodeToAlgConverter {
         // Expand table macro if possible. It's more efficient than LogicalTableFunctionScan.
         final SqlCallBinding callBinding = new SqlCallBinding( bb.scope.getValidator(), bb.scope, call );
         if ( operator instanceof SqlUserDefinedTableMacro udf ) {
-            //final TranslatableEntity table = udf.getTable( typeFactory, callBinding.sqlOperands() );
-            //final LogicalTable catalogTable = Catalog.getInstance().getTable( table.getId() );
+            //final TranslatableEntity table = udf.getLogicalTable( typeFactory, callBinding.sqlOperands() );
+            //final LogicalTable catalogTable = Catalog.getInstance().getLogicalTable( table.getId() );
             //final AlgDataType rowType = table.getRowType( typeFactory );
             //AlgOptEntity algOptEntity = AlgOptEntityImpl.create( null, rowType, table, catalogTable, null );
             //AlgNode converted = toAlg( algOptEntity );
