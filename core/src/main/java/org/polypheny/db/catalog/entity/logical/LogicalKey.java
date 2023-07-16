@@ -22,6 +22,8 @@ import io.activej.serializer.annotations.SerializeClass;
 import java.io.Serial;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.NonFinal;
@@ -79,14 +81,13 @@ public abstract class LogicalKey implements PolyObject, Comparable<LogicalKey> {
 
 
     public List<String> getColumnNames() {
-        Snapshot snapshot = Catalog.snapshot();
-        List<String> columnNames = new LinkedList<>();
-        for ( long columnId : columnIds ) {
-            columnNames.add( snapshot.rel().getColumn( columnId ).orElseThrow().name );
-        }
-        return columnNames;
+        return getColumns().stream().map(LogicalColumn::getName).collect(Collectors.toList());
     }
 
+    public List<LogicalColumn> getColumns() {
+        Snapshot snapshot = Catalog.snapshot();
+        return columnIds.stream().map(i -> snapshot.rel().getColumn( i ).orElseThrow()).collect(Collectors.toList());
+    }
 
     @Override
     public PolyValue[] getParameterArray() {
