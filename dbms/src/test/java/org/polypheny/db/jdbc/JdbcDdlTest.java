@@ -106,7 +106,6 @@ public class JdbcDdlTest {
                 // Create ddltest table and insert data
                 statement.executeUpdate( DDLTEST_SQL );
                 statement.executeUpdate( DDLTEST_DATA_SQL );
-
                 try {
                     // Checks
                     TestHelper.checkResultSet(
@@ -148,8 +147,6 @@ public class JdbcDdlTest {
                     TestHelper.checkResultSet(
                             statement.executeQuery( "SELECT tvarchar FROM ddltest" ),
                             ImmutableList.of( new Object[]{ DDLTEST_DATA[11] } ) );
-
-                    connection.commit();
                 } finally {
                     // Drop ddltest table
                     statement.executeUpdate( "DROP TABLE ddltest" );
@@ -212,7 +209,6 @@ public class JdbcDdlTest {
                     TestHelper.checkResultSet(
                             statement.executeQuery( "SELECT tvarchar FROM ddltestview" ),
                             ImmutableList.of( new Object[]{ DDLTEST_DATA[11] } ) );
-                    connection.commit();
                 } finally {
                     statement.executeUpdate( "DROP VIEW ddltestview" );
                     statement.executeUpdate( "DROP TABLE ddltest" );
@@ -245,11 +241,9 @@ public class JdbcDdlTest {
                             statement.executeQuery( "SELECT ttime FROM ddltestMaterialized" ),
                             ImmutableList.of( new Object[]{ DDLTEST_DATA[8] } ) );
 
-                    connection.commit();
                 } finally {
                     statement.executeUpdate( "DROP MATERIALIZED VIEW ddltestMaterialized" );
                     statement.executeUpdate( "DROP TABLE ddltest" );
-                    connection.commit();
                 }
             }
         }
@@ -278,11 +272,9 @@ public class JdbcDdlTest {
                             statement.executeQuery( "SELECT ttimestamp FROM ddltestMaterialized" ),
                             ImmutableList.of( new Object[]{ DDLTEST_DATA[9] } ) );
 
-                    connection.commit();
                 } finally {
                     statement.executeUpdate( "DROP MATERIALIZED VIEW ddltestMaterialized" );
                     statement.executeUpdate( "DROP TABLE ddltest" );
-                    connection.commit();
                 }
             }
         }
@@ -339,11 +331,9 @@ public class JdbcDdlTest {
                     TestHelper.checkResultSet(
                             statement.executeQuery( "SELECT tvarchar FROM ddltestMaterialized" ),
                             ImmutableList.of( new Object[]{ DDLTEST_DATA[11] } ) );
-                    connection.commit();
                 } finally {
                     statement.executeUpdate( "DROP MATERIALIZED VIEW ddltestMaterialized" );
                     statement.executeUpdate( "DROP TABLE ddltest" );
-                    connection.commit();
                 }
             }
         }
@@ -375,7 +365,6 @@ public class JdbcDdlTest {
                         + "tvarchar VARCHAR(20) NULL, "
                         + "tfile FILE NULL, "
                         + "PRIMARY KEY (tprimary) )" );
-
                 try {
                     statement.executeUpdate( "INSERT INTO ddltest(tprimary) VALUES (1)" );
                     statement.executeUpdate( "INSERT INTO ddltest(tprimary) VALUES (2, null, null, null, null, null, null, null, null, null, null, null, null)" );
