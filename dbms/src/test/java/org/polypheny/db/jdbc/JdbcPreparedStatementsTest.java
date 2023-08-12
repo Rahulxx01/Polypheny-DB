@@ -35,6 +35,7 @@ import org.apache.calcite.avatica.ColumnMetaData.Rep;
 import org.apache.calcite.avatica.SqlType;
 import org.apache.calcite.avatica.util.ArrayFactoryImpl;
 import org.apache.calcite.avatica.util.Unsafe;
+import org.junit.After;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -50,6 +51,7 @@ public class JdbcPreparedStatementsTest {
     private static final String SIMPLE_SCHEMA_SQL = "CREATE TABLE test_table (id INT, name VARCHAR(50))";
     private static final String SIMPLE_INSERT_SQL = "INSERT INTO test_table (id, name) VALUES (?, ?)";
     private static final String SIMPLE_SELECT_SQL = "SELECT * FROM test_table";
+    private static final String DROP_TABLE_SQL = "DROP TABLE test_table";
 
     private final static String SCHEMA_SQL = "CREATE TABLE pstest( "
             + "tbigint BIGINT NULL, "
@@ -88,7 +90,6 @@ public class JdbcPreparedStatementsTest {
         TestHelper.getInstance();
     }
 
-
     @Test(expected = SQLException.class)
     public void illegalExecuteQueryTest() throws SQLException {
         try ( JdbcConnection jdbcConnection = new JdbcConnection( false );
@@ -98,6 +99,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.executeQuery( "SELECT * FROM my_table" );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -112,6 +117,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.executeUpdate( "INSERT INTO my_table VALUES (2, 'B')" );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -126,6 +135,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.execute( "SELECT * FROM my_table" );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -140,6 +153,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.executeLargeUpdate( "INSERT INTO my_table VALUES (2, 'B')" );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -154,6 +171,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.executeUpdate( "INSERT INTO my_table VALUES (2, 'B')", Statement.RETURN_GENERATED_KEYS );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -168,6 +189,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.executeLargeUpdate( "INSERT INTO my_table VALUES (2, 'B')", Statement.RETURN_GENERATED_KEYS );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -182,6 +207,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.executeUpdate( "INSERT INTO my_table VALUES (2, 'B')", new int[]{ 1 } );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -196,6 +225,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.executeLargeUpdate( "INSERT INTO my_table VALUES (2, 'B')", new int[]{ 1 } );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -210,6 +243,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.executeUpdate( "INSERT INTO my_table VALUES (2, 'B')", new String[]{ "id" } );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -224,6 +261,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.executeLargeUpdate( "INSERT INTO my_table VALUES (2, 'B')", new String[]{ "id" } );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -238,6 +279,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.execute( "SELECT * FROM my_table", Statement.RETURN_GENERATED_KEYS );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -252,6 +297,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.execute( "SELECT * FROM my_table", new int[]{ 1 } );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -266,6 +315,10 @@ public class JdbcPreparedStatementsTest {
             }
             try ( PreparedStatement preparedStatement = connection.prepareStatement( SIMPLE_INSERT_SQL ) ) {
                 preparedStatement.execute( "SELECT * FROM my_table", new String[]{ "id" } );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -285,6 +338,10 @@ public class JdbcPreparedStatementsTest {
                 }
                 ResultSet rs = statement.executeQuery( SIMPLE_SELECT_SQL );
                 TestHelper.checkResultSet( rs, ImmutableList.of( new Object[]{ 1, "A" } ) );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -304,6 +361,10 @@ public class JdbcPreparedStatementsTest {
                 }
                 ResultSet rs = statement.executeQuery( SIMPLE_SELECT_SQL );
                 TestHelper.checkResultSet( rs, ImmutableList.of( new Object[]{ 1, "A" } ) );
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -323,6 +384,10 @@ public class JdbcPreparedStatementsTest {
                     ResultSet rs = preparedStatement.executeQuery();
                     TestHelper.checkResultSet( rs, ImmutableList.of( new Object[]{ 1, "A" } ) );
                 }
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
+                }
             }
         }
     }
@@ -341,6 +406,10 @@ public class JdbcPreparedStatementsTest {
                     preparedStatement.setInt( 1, 1 );
                     assertTrue( preparedStatement.execute() );
                     TestHelper.checkResultSet( preparedStatement.getResultSet(), ImmutableList.of( new Object[]{ 1, "A" } ) );
+                }
+            } finally {
+                try ( Statement statement = connection.createStatement() ) {
+                    statement.execute( DROP_TABLE_SQL );
                 }
             }
         }
